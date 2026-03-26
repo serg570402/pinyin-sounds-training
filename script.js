@@ -196,7 +196,7 @@ lesson.currntName = lesson.strngToPlay[0]
 
 $('#loop').on('change', function () {
   sprite.stop()
-  sprite.isStopped = false
+  // sprite.isStopped = false
   sprite.reset()
   lesson.nonStop = this.checked
   if (lesson.nonStop) {
@@ -277,11 +277,8 @@ $('#spnsInpts').on('click', '#confrmChange', function (e) {
   e.stopPropagation()
   elmToFocus().blur()
   sprite.stop()
+  sprite.isStopped = false
   sprite.reset()
-  // console.log(sprite.source)
-  // const prevNonStop = lesson.nonStop
-  // // lesson.nonStop = false
-  // $('#loop').prop('checked', false)
   $('#confrmChange').hide('slow')
   lesson.confirmed = true
   console.log(lesson.indxToPlay.length)
@@ -421,6 +418,10 @@ $('#hideAll').on('change', function () {
 })
 
 $('#random').on('change', function () {
+  sprite.stop()
+  sprite.isStopped = false
+  sprite.reset()
+
   // lesson.nonStop = false
   const checked = $(this).prop('checked')
   if (checked) {
