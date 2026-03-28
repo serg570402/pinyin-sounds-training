@@ -61,6 +61,7 @@ class Sprite {
 
   play(name) {
     if (this.source) {
+      //Prevents overlap
       try {
         this.source.stop()
       } catch { }
@@ -85,14 +86,17 @@ class Sprite {
           return
         }
         if (lesson.nonStop) {
+          let playElm = elmToFocus()
+          $(playElm).val(playElm.data('val')).addClass('pld')
           lesson.indxToPlay.shift()
           if (lesson.indxToPlay.length === 0) {
             restorIndxToPlay()
             return
           }
-          const playElm = elmToFocus()
+          playElm = elmToFocus()
           playElm.focus()
-          $(playElm).val(playElm.data('val')).addClass('pld')
+          // $(playElm).removeClass('pld').val('')
+
         }
         this.isStopped = false
       }
@@ -143,11 +147,13 @@ pinyinTxt.forEach((row, index) => {
 lesson.sprite.src = './pinyinSounds.mp3'
 const sprite = new Sprite(lesson.sprite)
 
+// const gain = sprite.gain1 // your GainNode
 const volmBr = document.getElementById('volBar')
 const level = document.getElementById('volLevel')
 const volmIcn = document.getElementById('volIcon')
 
 let lastVolume = sprite.gain1 ? sprite.gain1.gain.value : 1
+// gain.gain.value = lastVolume
 
 $(volmBr).on('click', (e) => {
   const rect = volmBr.getBoundingClientRect()
@@ -191,6 +197,7 @@ lesson.strngToPlay = tmpStrArr
 lesson.times = times
 lesson.currntIndx = lesson.indxToPlay[0]
 lesson.currntName = lesson.strngToPlay[0]
+// $(`#spnsInpts p.inpts input.inpts[data-indx="${lesson.currntIndx}"]`).focus()
 
 $('#coffeeBreak').on('click', function () {
   lesson.nonStop = false
@@ -242,7 +249,7 @@ $('#spnsInpts').on('click', 'p.spns span', function (e) {
   $(inpt).not('.off').length > 0
     ? inpt.addClass('off')
     : inpt.removeClass('off')
-  $('#confrmChange').show('slow')
+  $('#confrmChange:hidden') ? $('#confrmChange').show('slow') : null
   lesson.confirmed = false
 })
 
@@ -286,6 +293,12 @@ $('#spnsInpts').on('click', '#confrmChange', function (e) {
       $('#forAll').prop('checked', true)
     }
     elmToFocus().focus()
+    elmToFocus().removeClass('pld').val('')
+  }
+  if (lesson.random) {
+    lesson.indxToPlay.sort(() => Math.random() - 0.5)
+  } else {
+    lesson.indxToPlay.sort((a, b) => a - b)
   }
 })
 $('#spnsInpts').on('focus', "input[type='text']", function (e) {
@@ -321,6 +334,7 @@ $('#spnsInpts').on('input', "input[type='text']", function () {
       restorIndxToPlay()
     }
     elmToFocus().focus()
+    elmToFocus().removeClass('pld').val('')
     $('.flash').eq(0).text(val)
   }
 })
@@ -370,6 +384,7 @@ $('fieldset.control').on('change', '[type="checkbox"]', function () {
     }
   }
   playElm.focus()
+  $(playElm).removeClass('pld').val('')
 })
 
 function restorIndxToPlay() {
@@ -388,6 +403,7 @@ function restorIndxToPlay() {
   const indx = lesson.indxToPlay[0]
   playElm = elmToFocus()
   playElm.focus()
+  $(playElm).removeClass('pld').val('')
   if (lesson.nonStop) {
     $(playElm).val(playElm.data('val')).addClass('pld')
   }
