@@ -9,7 +9,7 @@ const pinyinTxt = [
   ['zhi', 'chi', 'shi', 'ri', 'zi', 'ci', 'si', 'yi', 'wu'],
   ['yu', 'ye', 'you', 'yuan', 'yin', 'yun', 'ying'],
 ]
-
+//new commit
 let k = 0
 let htmlSpns = ''
 let spns = ''
@@ -64,7 +64,7 @@ class Sprite {
       //Prevents overlap
       try {
         this.source.stop()
-      } catch {}
+      } catch { }
     }
     console.log('start Playing', this.playToken)
     if (this.audioBuffer) {
