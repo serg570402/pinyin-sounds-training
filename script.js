@@ -9,7 +9,7 @@ const pinyinTxt = [
   ['zhi', 'chi', 'shi', 'ri', 'zi', 'ci', 'si', 'yi', 'wu'],
   ['yu', 'ye', 'you', 'yuan', 'yin', 'yun', 'ying'],
 ]
-//new commit
+
 let k = 0
 let htmlSpns = ''
 let spns = ''
@@ -66,7 +66,7 @@ class Sprite {
         this.source.stop()
       } catch { }
     }
-    console.log('start Playing', this.playToken)
+    console.log('start Playing')
     if (this.audioBuffer) {
       const bufferSource = this.ctx.createBufferSource()
       bufferSource.buffer = this.audioBuffer
@@ -80,6 +80,7 @@ class Sprite {
       bufferSource.connect(this.gain1)
       bufferSource.start(this.offset, this.strt, this.dur)
       this.source.onended = () => {
+        console.log(83, this.isStopped)
         if (this.isStopped) {
           this.isStopped = false
           return
@@ -94,6 +95,7 @@ class Sprite {
           playElm.focus()
           $(playElm).val(playElm.data('val')).addClass('pld')
         }
+        this.isStopped = false
       }
     } else {
       console.log('Audio not loaded yet')
@@ -143,15 +145,15 @@ lesson.sprite.src = './pinyinSounds.mp3'
 const sprite = new Sprite(lesson.sprite)
 
 // const gain = sprite.gain1 // your GainNode
-const bar = document.getElementById('volBar')
+const volmBr = document.getElementById('volBar')
 const level = document.getElementById('volLevel')
-const icon = document.getElementById('volIcon')
+const volmIcn = document.getElementById('volIcon')
 
 let lastVolume = sprite.gain1 ? sprite.gain1.gain.value : 1
 // gain.gain.value = lastVolume
 
-$(bar).on('click', (e) => {
-  const rect = bar.getBoundingClientRect()
+$(volmBr).on('click', (e) => {
+  const rect = volmBr.getBoundingClientRect()
   const x = e.clientX - rect.left
   const volume = x / rect.width
 
@@ -161,7 +163,7 @@ $(bar).on('click', (e) => {
   updateUI()
 })
 
-$(icon).on('click', () => {
+$(volmIcn).on('click', () => {
   if (sprite.gain1.gain.value > 0) {
     lastVolume = sprite.gain1.gain.value
     sprite.gain1.gain.value = 0
@@ -176,11 +178,11 @@ function updateUI() {
   level.style.width = vol * 100 + '%'
 
   if (vol < 0.01) {
-    icon.textContent = '🔇'
+    volmIcn.textContent = '🔇'
   } else if (vol < 0.5) {
-    icon.textContent = '🔉'
+    volmIcn.textContent = '🔉'
   } else {
-    icon.textContent = '🔊'
+    volmIcn.textContent = '🔊'
   }
 }
 
@@ -193,21 +195,6 @@ lesson.times = times
 lesson.currntIndx = lesson.indxToPlay[0]
 lesson.currntName = lesson.strngToPlay[0]
 // $(`#spnsInpts p.inpts input.inpts[data-indx="${lesson.currntIndx}"]`).focus()
-
-$('#loop').on('change', function () {
-  sprite.stop()
-  // sprite.isStopped = false
-  sprite.reset()
-  lesson.nonStop = this.checked
-  if (lesson.nonStop) {
-    $('#coffeeBreak').show('slow')
-    $('#loop').hide('slow')
-    $('[for="loop"]').hide('slow')
-  }
-  const playElm = elmToFocus()
-  playElm.focus()
-  $(playElm).val(playElm.data('val')).addClass('pld')
-})
 
 $('#coffeeBreak').on('click', function () {
   lesson.nonStop = false
@@ -223,12 +210,8 @@ function elmToFocus() {
   return $(`input.inpts[data-indx="${lesson.indxToPlay[0]}"]`)
 }
 
-$('#spnsInpts').on('change', "input[type='checkbox']", function (e) {
-  e.stopPropagation()
+$('#spnsInpts').on('change', "input[type='checkbox']", function () {
   const indx = lesson.currntIndx
-  console.log(indx)
-  $('[type="text"]').eq(indx).blur()
-  console.log($('[type="text"]').eq(indx))
   $('#confrmChange').show('slow')
   lesson.confirmed = false
   const checked = $(this).prop('checked')
@@ -267,21 +250,10 @@ $('#spnsInpts').on('click', 'p.spns span', function (e) {
   lesson.confirmed = false
 })
 
-$('#spnsInpts').on('click', function (e) {
-  // e.stopPropagation()
-  const indx = lesson.indxToPlay[0]
-  // $(`input.inpts[data-indx="${indx}"]`).focus()
-})
-
 $('#spnsInpts').on('click', '#confrmChange', function (e) {
-  e.stopPropagation()
-  elmToFocus().blur()
   sprite.stop()
-  sprite.isStopped = false
-  sprite.reset()
   $('#confrmChange').hide('slow')
   lesson.confirmed = true
-  console.log(lesson.indxToPlay.length)
   if (lesson.indxToPlay.length <= 0) {
     restorIndxToPlay()
   }
@@ -317,54 +289,27 @@ $('#spnsInpts').on('click', '#confrmChange', function (e) {
     if (inptsOn.length > 0) {
       $('#forAll').prop('checked', true)
     }
-    console.log(elmToFocus())
     elmToFocus().focus()
-    // lesson.nonStop = prevNonStop
-    // $(playElm).val(playElm.data('val')).addClass('pld')
-    // const indx = lesson.indxToPlay[0]
-    // $(`input.inpts[data-indx="${indx}"]`).focus()
   }
 })
 $('#spnsInpts').on('focus', "input[type='text']", function (e) {
   lesson.currntName = $(this).data('val')
   lesson.currntIndx = $(this).data('indx')
   $('#flashSpan').text('')
+  if (lesson.nonStop) {
+    if (sprite.isStopped === true) {
+      setTimeout(() => {
+        sprite.isStopped = false
+      }, 50)
+    }
+  }
   sprite.play(lesson.currntName)
 })
 
 $('#spnsInpts').on('blur', "input[type='text']", function (e) {
-  if (sprite.source) {
-    // console.log('Yes', sprite.source)
-    // sprite.stop()
-  } else {
-    console.log('NO', sprite.source)
-  }
 })
 
-$('#flashCard').on('change', function () {
-  const checked = $(this).prop('checked')
-  if (checked) {
-    $('#coverPlayground').show('slow')
-    $('.flash').text('')
-  } else {
-    $('#coverPlayground').hide('slow')
-  }
-  indx = lesson.indxToPlay[0]
-  $(`input.inpts[data-indx="${indx}"]`).focus()
-})
-
-$('#spnsInpts').on('keydown', "input[type='text']", function (e) {
-  if (e.key === 'Enter') {
-    const strng = $(this).val()
-    sprite.play(lesson.currntName)
-    e.preventDefault()
-  } else if (e.key === ' ') {
-    e.preventDefault()
-    $(this).val('')
-  }
-})
-
-$('#spnsInpts').on('keyup', "input[type='text']", function () {
+$('#spnsInpts').on('input', "input[type='text']", function () {
   if (!lesson.confirmed) {
     $('#confrmChange').hide('slow')
     $('#confrmChange').show('slow')
@@ -374,16 +319,61 @@ $('#spnsInpts').on('keyup', "input[type='text']", function () {
   const val = $(this).val()
   $('#flashSpan').text(val)
   if (val === lesson.currntName) {
+    $(this).addClass('pld')
     lesson.indxToPlay.shift()
     if (lesson.indxToPlay.length === 0) {
       restorIndxToPlay()
-    } else {
-      $(this).addClass('pld')
-      const indx = lesson.indxToPlay[0]
-      $(`input.inpts[data-indx="${indx}"]`).focus()
     }
+    elmToFocus().focus()
     $('.flash').eq(0).text(val)
   }
+})
+
+$('#spnsInpts').on('keydown', 'input[type="text"]', function (e) {
+
+  if (e.key === 'Enter') {
+    const strng = $(this).val()
+    sprite.play(lesson.currntName)
+  } else if (e.key === ' ') {
+    $(this).val('')
+  }
+})
+
+$('fieldset.control').on('change', '[type="checkbox"]', function () {
+  sprite.stop()
+  const id = this.id
+  const checked = $(this).prop('checked')
+  const playElm = elmToFocus()
+  $(playElm).val(playElm.data('val'))
+  console.log(id);
+  if (id === 'hideAll') {
+    if (!checked) {
+      $('p.spns').removeClass('invisible')
+    } else {
+      $('p.spns').addClass('invisible')
+    }
+  } else if (id === 'flashCard') {
+    if (checked) {
+      $('#coverPlayground').show('slow')
+      $('.flash').text('')
+    } else {
+      $('#coverPlayground').hide('slow')
+    }
+  } else if (id === 'random') {
+    lesson.random = checked
+    if (checked) {
+      lesson.indxToPlay.sort(() => Math.random() - 0.5)
+    } else {
+      lesson.indxToPlay.sort((a, b) => a - b)
+    }
+  } else if (id === 'loop') {
+    lesson.nonStop = checked
+    if (checked) {
+      // $('#coffeeBreak').show('slow')
+      $(playElm).val(playElm.data('val')).addClass('pld')
+    }
+  }
+  playElm.focus()
 })
 
 function restorIndxToPlay() {
@@ -406,33 +396,6 @@ function restorIndxToPlay() {
     $(playElm).val(playElm.data('val')).addClass('pld')
   }
 }
-
-$('#hideAll').on('change', function () {
-  const checked = $(this).prop('checked')
-  console.log(checked)
-  if (!checked) {
-    $('p.spns').removeClass('invisible')
-  } else {
-    $('p.spns').addClass('invisible')
-  }
-})
-
-$('#random').on('change', function () {
-  sprite.stop()
-  sprite.isStopped = false
-  sprite.reset()
-
-  // lesson.nonStop = false
-  const checked = $(this).prop('checked')
-  if (checked) {
-    lesson.indxToPlay.sort(() => Math.random() - 0.5)
-  } else {
-    lesson.indxToPlay.sort((a, b) => a - b)
-  }
-  const indx = lesson.indxToPlay[0]
-  lesson.random = checked
-  elmToFocus().focus()
-})
 
 $('#startPlay').on('click', async function (e) {
   e.stopPropagation()
