@@ -1,86 +1,78 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="favicon.png" />
-    <link rel="stylesheet" href="./style.css" />
-    <!-- <script src="../../js/jquery-3.6.0.min.js"></script> -->
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
-    <script type="text/javascript" src="./script.js" defer></script>
-    <title>Pinyin Sounds</title>
-    <style></style>
-  </head>
-  <body>
-    <div id="topDiv">
-      <h1>Learn Pinyin Sounds</h1>
-      <div id="container">
-        <div id="playGround">
-          <main id="pinyinSounds">
-            <div id="coffeeBreak" style="display: none">
-              <h2>
-                Now It's Coffee Breack Time.<br />
-                Back to Learning - Click Here
-              </h2>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="favicon.png" />
+  <link rel="stylesheet" href="./style.css" />
+  <!-- <script src="../../js/jquery-3.6.0.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="./script.js" defer></script>
+  <title>Pinyin Sounds</title>
+  <style></style>
+</head>
+
+<body>
+  <div id="topDiv">
+    <h1>Learn Pinyin Sounds</h1>
+    <div id="container">
+      <div id="playGround">
+        <main id="pinyinSounds">
+          <div id="coffeeBreak" style="display: none">
+            <h2>
+              Now It's Coffee Breack Time.<br />
+              Back to Learning - Click Here
+            </h2>
+          </div>
+          <div id="spnsInpts">
+            <h3>Listen&Type</h3>
+            <button id="confrmChange" style="display: none; z-index: 100">
+              Confirm Changes
+            </button>
+            <div id="coverPlayground" style="display: none">
+              <span class="flash"></span>
+              <span id="flashSpan" class="flash"></span>
             </div>
-            <div id="spnsInpts">
-              <h3>Listen&Type</h3>
-              <button id="confrmChange" style="display: none; z-index: 100">
-                Confirm Changes
-              </button>
-              <div id="coverPlayground" style="display: none">
-                <span class="flash"></span>
-                <span id="flashSpan" class="flash"></span>
-              </div>
+          </div>
+        </main>
+      </div>
+      <div id="controls">
+        <h3>Control Panel</h3>
+        <form id="dashboard">
+          <fieldset id="audioControl" class="control">
+            <label for="audioControl">Audio control</label>
+            <span id="volIcon">🔊</span>
+            <div id="volBar">
+              <div id="volLevel"></div>
             </div>
-          </main>
-        </div>
-        <div id="controls">
-          <h3>Control Panel</h3>
-          <form id="dashboard">
-            <fieldset id="audioControl" class="control">
-              <label for="audioControl">Audio control</label>
-              <span id="volIcon">🔊</span>
-              <div id="volBar">
-                <div id="volLevel"></div>
-              </div>
-              <!-- </div> -->
-              <!-- <input id="mute1" class="mute" name="mute1" type="checkbox" />
+            <!-- </div> -->
+            <!-- <input id="mute1" class="mute" name="mute1" type="checkbox" />
                -->
-            </fieldset>
-            <fieldset class="control">
-              <input id="hideAll" name="hideAll" type="checkbox" />
-              <label for="hideAll">Hide All</label>
-              <input id="flashCard" name="flashCard" type="checkbox" />
-              <label for="flashCard">Flashcard</label>
-              <input id="random" name="random" type="checkbox" />
-              <label for="random">Random</label>
-              <input
-                id="loop"
-                name="loop"
-                type="checkbox"
-                style="display: none"
-              />
-              <label for="loop" style="display: none">Non-Stop</label>
-            </fieldset>
-          </form>
-        </div>
-        <div id="audioLoad">
-          <button id="startPlay" style="display: none">
-            Click Here To Start
-          </button>
-          <div class="spinner" style="display: none"></div>
-          <!-- <audio src="./pinyinSounds.mp3"></audio> -->
-        </div>
+          </fieldset>
+          <fieldset class="control">
+            <input id="hideAll" name="hideAll" type="checkbox" />
+            <label for="hideAll">Hide All</label>
+            <input id="flashCard" name="flashCard" type="checkbox" />
+            <label for="flashCard">Flashcard</label>
+            <input id="random" name="random" type="checkbox" />
+            <label for="random">Random</label>
+            <input id="loop" name="loop" type="checkbox" style="display: none" />
+            <label for="loop" style="display: none">Non-Stop</label>
+          </fieldset>
+        </form>
+      </div>
+      <div id="audioLoad">
+        <button id="startPlay" style="display: none">
+          Click Here To Start
+        </button>
+        <div class="spinner" style="display: none"></div>
+        <!-- <audio src="./pinyinSounds.mp3"></audio> -->
       </div>
     </div>
-    <span
-      id="widthMesure"
-      style="display: none; font-family: monospace; font-size: 1.2rem"
-    ></span>
-  </body>
+  </div>
+  <span id="widthMesure" style="display: none; font-family: monospace; font-size: 1.2rem"></span>
+</body>
+
 </html>
