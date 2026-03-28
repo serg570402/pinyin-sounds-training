@@ -80,9 +80,7 @@ main {
   box-sizing: border-box;
   font-family: inherit;
   font-size: 1.2rem;
-  /* or your value */
   padding: 0;
-  /* same padding */
   text-align: center;
 }
 
@@ -95,7 +93,6 @@ main {
 .inpts input {
   margin: 0 0.2rem;
   border: 1px solid #000;
-  /* same border */
 }
 
 #container {
@@ -110,9 +107,6 @@ main {
 }
 
 fieldset {
-  /* display: grid;
-  grid-template-columns: 20% auto;
-  gap: 6px 6px; */
   position: relative;
   font-size: 1.2rem;
 }
@@ -146,12 +140,6 @@ label {
   background-color: rgba(100, 100, 100, 0.5);
   ;
 }
-
-/* #audioLoad {
-    position: relative;
-    width: 100%;
-    height: 100%;
-} */
 
 #startPlay {
   scale: 3;

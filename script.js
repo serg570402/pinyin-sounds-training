@@ -61,7 +61,6 @@ class Sprite {
 
   play(name) {
     if (this.source) {
-      //Prevents overlap
       try {
         this.source.stop()
       } catch { }
@@ -144,13 +143,11 @@ pinyinTxt.forEach((row, index) => {
 lesson.sprite.src = './pinyinSounds.mp3'
 const sprite = new Sprite(lesson.sprite)
 
-// const gain = sprite.gain1 // your GainNode
 const volmBr = document.getElementById('volBar')
 const level = document.getElementById('volLevel')
 const volmIcn = document.getElementById('volIcon')
 
 let lastVolume = sprite.gain1 ? sprite.gain1.gain.value : 1
-// gain.gain.value = lastVolume
 
 $(volmBr).on('click', (e) => {
   const rect = volmBr.getBoundingClientRect()
@@ -194,7 +191,6 @@ lesson.strngToPlay = tmpStrArr
 lesson.times = times
 lesson.currntIndx = lesson.indxToPlay[0]
 lesson.currntName = lesson.strngToPlay[0]
-// $(`#spnsInpts p.inpts input.inpts[data-indx="${lesson.currntIndx}"]`).focus()
 
 $('#coffeeBreak').on('click', function () {
   lesson.nonStop = false
